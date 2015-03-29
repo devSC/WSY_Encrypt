@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "ConverUtil.h"
+#import <MediaPlayer/MediaPlayer.h>
 @interface ViewController ()
 
 @end
@@ -61,8 +62,10 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
             }
             [self chectFileExistWithFilePath:movFilePath];
             [[NSData dataWithBytes:newHeadByte length:1024] writeToFile:movFilePath atomically:YES];;
-            [fileHandle seekToFileOffset:(1024+16)];
+            [fileHandle offsetInFile];
             [[fileHandle readDataToEndOfFile] writeToFile:movFilePath atomically:YES];
+
+            [self playVideoWithUrl:movFilePath];
             NSLog(@"转换成功");
         }else {
             //提示更新版本
@@ -70,6 +73,11 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
         
     }
     
+}
+- (void)playVideoWithUrl: (NSString *)urlString
+{
+    MPMoviePlayerViewController *mpVC = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:urlString]];
+    [self presentMoviePlayerViewControllerAnimated:mpVC];
 }
 - (void)chectFileExistWithFilePath: (NSString *)path
 {
