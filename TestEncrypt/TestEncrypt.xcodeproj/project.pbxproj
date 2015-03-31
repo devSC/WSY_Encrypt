@@ -16,6 +16,7 @@
 		75CF3D481AC79FA30043218C /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75CF3D461AC79FA30043218C /* LaunchScreen.xib */; };
 		75CF3D541AC79FA30043218C /* TestEncryptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CF3D531AC79FA30043218C /* TestEncryptTests.m */; };
 		75CF3D5F1AC7B0C00043218C /* ConverUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CF3D5E1AC7B0C00043218C /* ConverUtil.m */; };
+		FE6B912A1ACA6F7000EE187E /* NSString+NSStringHexToBytes.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6B91291ACA6F7000EE187E /* NSString+NSStringHexToBytes.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,8 @@
 		75CF3D531AC79FA30043218C /* TestEncryptTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestEncryptTests.m; sourceTree = "<group>"; };
 		75CF3D5D1AC7B0C00043218C /* ConverUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConverUtil.h; sourceTree = "<group>"; };
 		75CF3D5E1AC7B0C00043218C /* ConverUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConverUtil.m; sourceTree = "<group>"; };
+		FE6B91281ACA6F7000EE187E /* NSString+NSStringHexToBytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSStringHexToBytes.h"; sourceTree = "<group>"; };
+		FE6B91291ACA6F7000EE187E /* NSString+NSStringHexToBytes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSStringHexToBytes.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +98,8 @@
 				75CF3D5E1AC7B0C00043218C /* ConverUtil.m */,
 				751161CE1AC7F5290049ED9E /* WSVideoConvertUtil.h */,
 				751161CF1AC7F5290049ED9E /* WSVideoConvertUtil.m */,
+				FE6B91281ACA6F7000EE187E /* NSString+NSStringHexToBytes.h */,
+				FE6B91291ACA6F7000EE187E /* NSString+NSStringHexToBytes.m */,
 				75CF3D411AC79FA30043218C /* Main.storyboard */,
 				75CF3D441AC79FA30043218C /* Images.xcassets */,
 				75CF3D461AC79FA30043218C /* LaunchScreen.xib */,
@@ -233,6 +238,7 @@
 				751161D01AC7F5290049ED9E /* WSVideoConvertUtil.m in Sources */,
 				75CF3D3D1AC79FA30043218C /* AppDelegate.m in Sources */,
 				75CF3D5F1AC7B0C00043218C /* ConverUtil.m in Sources */,
+				FE6B912A1ACA6F7000EE187E /* NSString+NSStringHexToBytes.m in Sources */,
 				75CF3D3A1AC79FA30043218C /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -357,7 +363,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TestEncrypt/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -369,7 +375,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = TestEncrypt/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
