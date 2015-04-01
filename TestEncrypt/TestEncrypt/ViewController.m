@@ -65,7 +65,10 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
             [fileHandle offsetInFile];
             [[fileHandle readDataToEndOfFile] writeToFile:movFilePath atomically:YES];
 
-            [self playVideoWithUrl:movFilePath];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self playVideoWithUrl:movFilePath];
+
+            });
             NSLog(@"转换成功");
         }else {
             //提示更新版本
