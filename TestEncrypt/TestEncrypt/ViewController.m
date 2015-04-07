@@ -11,15 +11,18 @@
 #import "ConverUtil.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "NSString+NSStringHexToBytes.h"
+#import "WSVideoConvertUtil.h"
 @interface ViewController ()
 
 @end
-#define filePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"movie.sgk"]
-#define movFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"movie.mp4"]
+#define filePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"22.sgk"]
+#define movFilePath [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"22.mp4"]
 static NSString *skgString = @"http://mov1.shougongke.com/x/22.sgk";
 static NSString *mp4String = @"http://mov1.shougongke.com/x/21.mp4";
 
-static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8c742869ffbeb1669618a4a308475161474798bbd02d3810955817359843taskwn4a77605eaa89f93a6e9954e020b10d6be129349348ab1166fc79ecd13ed837a829f0073610189643dde15fb4688e6d";
+static char *originKey = "da2514efeb1ad217140454taskwn49c1283062467080280c8c742869ffbeb1669618a4a308475161474798bbd02d3810955817359843taskwn4a77605eaa89f93a6e9954e020b10d6be129349348ab1166fc79ecd13ed837a829f0073610189643dde15fb4688e6d\0";
+
+static NSString *originKeyString = @"da2514efeb1ad217140454taskwn49c1283062467080280c8c742869ffbeb1669618a4a308475161474798bbd02d3810955817359843taskwn4a77605eaa89f93a6e9954e020b10d6be129349348ab1166fc79ecd13ed837a829f0073610189643dde15fb4688e6d";
 
 @implementation ViewController
 
@@ -33,7 +36,13 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
     NSError *error = nil;
     
     [self downloadTheFile];
-
+    [WSVideoConvertUtil decodeFileWithFileName:@"22" completeHandler:^{
+        NSLog(@"已完成");
+    } errorHandler:^(NSError *error) {
+        NSLog(@"%@", error.description);
+    }];
+    
+    return;
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
     if (error) {
         NSLog(@"error: %@", [error description]);
@@ -52,26 +61,23 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
     if ([self checkIsSkg:headByte]) {
         //检查算法版本号 如果算法版本号不能支持，则无法解密；
         if ([self checkKeyVersionWithByte:headByte]) {
-
-            //5. 把 key0fix 逐字节与 key1 进行 XOR 计算，得到 trueKey；
-//               Byte *trueKey = [self trueKeyWithI ndex:headByte[5]];
-               Byte *trueKey = [self trueKeyWithHeader:headByte];
-            /* 6. 继续读取需要解密的文件，并打开输出文件，
-             如果是前 1024 个字节，与 trueKey 的对应位置进行 XOR 计算，并输出；
-             否则，直接输出。
-             */
-            NSLog(@"%llu", [fileHandle offsetInFile]);
+            Byte *trueKey = [self trueKeyWithHeaderString:headByte];
             [fileHandle seekToFileOffset:[fileHandle offsetInFile]];
             NSData *headData = [fileHandle readDataOfLength:1024];
             Byte *newHeadByte = (Byte *)headData.bytes;
+            NSString *new = nil;
             for (int i = 0; i < 1024; i++) {
                 newHeadByte[i] = trueKey[i] ^ newHeadByte[i];
+                NSLog(@"%@", [NSString stringWithFormat:@"%c", newHeadByte[i]]);
+                new = [new stringByAppendingString:[NSString stringWithFormat:@"%c", newHeadByte[i]]];
+                printf("i: %d testByte = %d\n",i, newHeadByte[i]);
             }
+            NSLog(@"newHeadByte: %s", newHeadByte);
             [self chectFileExistWithFilePath:movFilePath];
 
             [[NSData dataWithBytes:newHeadByte length:1024] writeToFile:movFilePath atomically:YES];;
 //            [fileHandle offsetInFile];
-            NSLog(@"%llu", [fileHandle offsetInFile]);
+//            NSLog(@"%llu", [fileHandle offsetInFile]);
 
             [fileHandle seekToFileOffset:[fileHandle offsetInFile]];
             [[fileHandle readDataToEndOfFile] writeToFile:movFilePath atomically:YES];
@@ -104,27 +110,71 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
         }
     }
 }
+
 //- (Byte *)trueKeyWithKey1: (Byte *)key
-- (Byte *)trueKeyWithHeader: (Byte *)header
+
+- (Byte *)trueKeyWithHeader: (int)header
 {
     //4. 从 offset 为 key1 处，截取解密密钥 key0，得到 key0sub；扩展长度到 1024 字节，以下称为 key0fix；
-    NSString *keySub = [originKey substringFromIndex:header[5]];
-    while (keySub.length < 1024) {
-        keySub =[keySub stringByAppendingString:keySub];
+    char keySub[] = {};
+    for (int i = header, j = 0; i < strlen(originKey); i ++, j ++) {
+//        keySub = strcat(keySub, &originKey[i]);
+        keySub[j] = originKey[i];
     }
-    NSData *ksData = [keySub dataUsingEncoding: NSUTF8StringEncoding];
-    Byte *ksBytes = (Byte *)[ksData bytes];
+//    NSString *keySub = [originKey substringFromIndex:header[5]];
+    printf("%s %lu", keySub, strlen(keySub));
+    
+    char keySub2[] = {};
+    int j = 0;
+    int keySubLen = (int )strlen(keySub);
+    while (strlen(keySub2) < 1024) {
+//        keySub2[] = strcat(keySub, keySub);
+        for (int i = 0; i < keySubLen; i ++) {
+            //        keySub = strcat(keySub, &originKey[i]);
+            keySub2[j] = keySub[i];
+            printf("\n%d %d keySub:Len %lu" ,j, i, strlen(keySub));
+            j ++;
+        }
+        if (strlen(keySub) > 1024) {
+            break;
+        }
+    }
+    
+//    NSData *ksData = [keySub dataUsingEncoding: NSUTF8StringEncoding];
+//    Byte *ksBytes = (Byte *)[ksData bytes];
 //        Byte *ksBytes = (Byte *)[keySub  hexToBytes].bytes;
 //    Byte *bytes = keySub.
-    
+//    int headerC = header[5];
     for (int i = 0; i < 1024; i++) {
         //进行异或运算
-        ksBytes[i] =(ksBytes[i]^header[5]);
+//        ksBytes[i] =(ksBytes[i]^header[5]);
+        
+        keySub[i] = keySub[i]^header;
     }
-//    NSLog(@"%@", keySub);
+    NSLog(@"%s", keySub);
     //ksBytes	Byte *	"|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(/zx./sx|*syr-{{|x}z{zsr}\x7fx//.z~-)\x7f}ss.}/|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(/zx./sx|*syr-{{|x}z{zsr}\x7fx//.z~-)\x7f}ss.}/|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(/zx./sx|*syr-{{|x}z{zsr}\x7fx//.z~-)\x7f}ss.}/|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(/zx./sx|*syr-{{|x}z{zsr}\x7fx//.z~-)\x7f}ss.}/|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(/zx./sx|*syr-{{|x}z{zsr}\x7fx//.z~-)\x7f}ss.}/|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(/zx./sx|*syr-{{|x}z{zsr}\x7fx//.z~-)\x7f}ss.}/|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(/zx./sx|*syr-{{|x}z{zsr}\x7fx//.z~-)\x7f}ss.}/|~z}z\x7f|\x7f|rs))/{y/xsz{r~~sz|x~rs\x7fx?*8 <%\x7f*||}{~.**sr-rx*}.rr~\x7f.{y{)z{/}).zyrx\x7frx\x7fs*)zz}}-(|r.(..."	0x14ab6a00
-    return ksBytes;
+//    return ksBytes;
+    return (Byte *)keySub;
 }
+
+- (Byte *)trueKeyWithHeaderString: (Byte *)header
+{
+    //4. 从 offset 为 key1 处，截取解密密钥 key0，得到 key0sub；扩展长度到 1024 字节，以下称为 key0fix；
+    NSString *string = [originKeyString substringFromIndex:header[5]];
+    while (string.length < 1024) {
+        string = [string stringByAppendingString:string];
+    }
+    NSData *stringData = [string dataUsingEncoding:NSMacOSRomanStringEncoding];
+    Byte *stringByte = (Byte *)stringData.bytes;
+    NSLog(@"%s", stringByte);
+    for (int i = 0; i < 1024; i ++) {
+        stringByte[i] = (Byte )(stringByte[i] ^ header[5]);
+    }
+    NSLog(@"%s", stringByte);
+    return (Byte *)stringByte;
+}
+
+
 - (BOOL)checkKeyVersionWithByte: (Byte *)byte{
     return byte[3] == 0x31 ? YES : NO;
 }
@@ -180,6 +230,103 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
     }
     
 }
+- (void)pyCode
+{
+    NSString *sourcePaht = [NSHomeDirectory() stringByAppendingPathComponent:filePath];
+    
+    NSString *targetPaht = [NSHomeDirectory() stringByAppendingPathComponent:@"Desktop/24.mp4"];
+    
+    NSFileManager *firlManger = [NSFileManager defaultManager];
+    
+    BOOL isSuccess = [firlManger createFileAtPath:movFilePath contents:nil attributes:nil];
+    if (isSuccess) {
+        NSLog(@"目标文件创建成功");
+    }
+    
+    NSFileHandle * readHandle = [NSFileHandle fileHandleForReadingAtPath:filePath];
+    NSFileHandle * writeHandle = [NSFileHandle fileHandleForWritingAtPath:movFilePath];
+    
+    
+    
+    NSData *headerData = [readHandle readDataOfLength:16];
+    
+    //        NSData *headerSgk = [headerData subdataWithRange:NSMakeRange(0, 3)];
+    //
+    //
+    //        NSString *hSgk = [[NSString alloc] initWithData:headerSgk encoding:NSUTF8StringEncoding];
+    
+    
+    
+    NSString *key0 = @"da2514efeb1ad217140454taskwn49c1283062467080280c8c742869ffbeb1669618a4a308475161474798bbd02d3810955817359843taskwn4a77605eaa89f93a6e9954e020b10d6be129349348ab1166fc79ecd13ed837a829f0073610189643dde15fb4688e6d";
+    
+    NSData *key1 = [headerData subdataWithRange:NSMakeRange(5, 1)];
+    
+    
+    
+    NSData *hex = [headerData subdataWithRange:NSMakeRange(8, 7)];
+    
+    
+    NSLog(@"%@",[[NSString alloc] initWithData:hex encoding:NSUTF8StringEncoding]);
+    
+    
+    
+    char *key1C = (char *)key1.bytes;
+    
+    NSString *sub = [key0 substringFromIndex:key1C[0]];
+    NSData *key0Sub = [sub dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSMutableData *key0fix = [NSMutableData dataWithLength:1024];
+    
+    for (int i = 0; i < 8; i++) {
+        [key0fix replaceBytesInRange:NSMakeRange(i*key0Sub.length, key0Sub.length) withBytes:(const void *)[key0Sub bytes]];
+    }
+    
+    NSData *newFix = [key0fix subdataWithRange:NSMakeRange(0, 1024)];
+    
+    //        NSLog(@"%@,%d",newFix,key0fix.length);
+    
+    
+    
+    
+    char *key0fixChar = (char *)newFix.bytes;
+    char ss[1024];
+    for (int i = 0; i < 1024; i++) {
+        ss[i] = key0fixChar[i] ^ key1C[0];
+    }
+    
+    
+    
+    NSData *frontData = [readHandle readDataOfLength:1024];
+    char *front = (char *)frontData.bytes;
+    
+    char newS[1024];
+    for (int i = 0; i < 1024; i++) {
+        newS[i] = ss[i] ^ front[i];
+    }
+    
+    NSData *key2 = [NSData dataWithBytes:newS length:1024];
+    [self chectFileExistWithFilePath:movFilePath];
+    
+    [key2 writeToFile:movFilePath atomically:YES];;
+    //            [fileHandle offsetInFile];
+    //            NSLog(@"%llu", [fileHandle offsetInFile]);
+    
+    [readHandle seekToFileOffset:[readHandle offsetInFile]];
+    [[readHandle readDataToEndOfFile] writeToFile:movFilePath atomically:YES];
+    NSLog(@"完成");
+    return;
+    [writeHandle writeData:key2];
+    
+    NSData *data = [readHandle readDataOfLength:1024*10];
+
+    while (data != 0) {
+        [writeHandle writeData:data];
+        data = [readHandle readDataOfLength:1000 * 10];
+    }
+    
+    [readHandle closeFile];
+    [writeHandle closeFile];
+}
 
 
 /*
@@ -220,6 +367,7 @@ static NSString *originKey = @"da2514efeb1ad217140454taskwn49c1283062467080280c8
     [inputStream release];
 }
 */
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
