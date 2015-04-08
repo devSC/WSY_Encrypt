@@ -102,30 +102,30 @@
     if ([WSVideoConvertUtil checkIsSkg:headByte]) {
         if ([WSVideoConvertUtil checkKeyVersionWithByte:headByte]) {
             
-//            NSString *subKey = [key substringFromIndex:headByte[5]];
-//            while (subKey.length < 1024) {
-//                subKey = [subKey stringByAppendingString:subKey];
-//            }
-//            NSData *stringData = [subKey dataUsingEncoding:NSUTF8StringEncoding];
-//            NSMutableData *data = [NSMutableData dataWithData:stringData];
-//            NSData *newData = [data subdataWithRange:NSMakeRange(0, 1024)];//key0fix
-            NSData *key1 = [headerData subdataWithRange:NSMakeRange(5, 1)];
-            char *key1Char = (char *)key1.bytes;
-
-            NSString *sub = [key substringFromIndex:key1Char[0]];
-            NSData *key0Sub = [sub dataUsingEncoding:NSUTF8StringEncoding];
-            
-            NSMutableData *key0fix = [NSMutableData dataWithLength:1024];
-            
-            for (int i = 0; i < 8; i++) {
-                [key0fix replaceBytesInRange:NSMakeRange(i*key0Sub.length, key0Sub.length) withBytes:(const void *)[key0Sub bytes]];
+            NSString *subKey = [key substringFromIndex:headByte[5]];
+            while (subKey.length < 1024) {
+                subKey = [subKey stringByAppendingString:subKey];
             }
-            NSData *newFix = [key0fix subdataWithRange:NSMakeRange(0, 1024)];
+            NSData *stringData = [subKey dataUsingEncoding:NSUTF8StringEncoding];
+            NSMutableData *data = [NSMutableData dataWithData:stringData];
+            NSData *newData = [data subdataWithRange:NSMakeRange(0, 1024)];//key0fix
+//            NSData *key1 = [headerData subdataWithRange:NSMakeRange(5, 1)];
+//            char *key1Char = (char *)key1.bytes;
+//
+//            NSString *sub = [key substringFromIndex:key1Char[0]];
+//            NSData *key0Sub = [sub dataUsingEncoding:NSUTF8StringEncoding];
+//            
+//            NSMutableData *key0fix = [NSMutableData dataWithLength:1024];
+//            
+//            for (int i = 0; i < 8; i++) {
+//                [key0fix replaceBytesInRange:NSMakeRange(i*key0Sub.length, key0Sub.length) withBytes:(const void *)[key0Sub bytes]];
+//            }
+//            NSData *newFix = [key0fix subdataWithRange:NSMakeRange(0, 1024)];
 
-            char *stringByte = (char *)newFix.bytes;
+            char *stringByte = (char *)newData.bytes;
             char key2Char[1024];
             for (int i = 0; i < 1024; i ++) {
-                key2Char[i] = stringByte[i] ^ key1Char[0];
+                key2Char[i] = stringByte[i] ^ headByte[5];
             }
             NSData *frontData = [readHandler readDataOfLength:1024];
             char *frontDataChar = (char *)frontData.bytes;
