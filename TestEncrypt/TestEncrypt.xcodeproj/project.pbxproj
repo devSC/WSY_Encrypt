@@ -17,6 +17,10 @@
 		75CF3D541AC79FA30043218C /* TestEncryptTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CF3D531AC79FA30043218C /* TestEncryptTests.m */; };
 		75CF3D5F1AC7B0C00043218C /* ConverUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 75CF3D5E1AC7B0C00043218C /* ConverUtil.m */; };
 		FE6B912A1ACA6F7000EE187E /* NSString+NSStringHexToBytes.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6B91291ACA6F7000EE187E /* NSString+NSStringHexToBytes.m */; };
+		FEC5ACF71AD0E7DF0052C527 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEC5ACF61AD0E7DF0052C527 /* NotificationCenter.framework */; };
+		FEC5ACFD1AD0E7DF0052C527 /* TodayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC5ACFC1AD0E7DF0052C527 /* TodayViewController.m */; };
+		FEC5ACFF1AD0E7DF0052C527 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FEC5ACFE1AD0E7DF0052C527 /* MainInterface.storyboard */; };
+		FEC5AD021AD0E7DF0052C527 /* My Today Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FEC5ACF41AD0E7DF0052C527 /* My Today Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,7 +31,28 @@
 			remoteGlobalIDString = 75CF3D331AC79FA30043218C;
 			remoteInfo = TestEncrypt;
 		};
+		FEC5AD001AD0E7DF0052C527 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 75CF3D2C1AC79FA30043218C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FEC5ACF31AD0E7DF0052C527;
+			remoteInfo = "My Today Extension";
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FEC5AD061AD0E7DF0052C527 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FEC5AD021AD0E7DF0052C527 /* My Today Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		751161CE1AC7F5290049ED9E /* WSVideoConvertUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSVideoConvertUtil.h; sourceTree = "<group>"; };
@@ -49,6 +74,13 @@
 		75CF3D5E1AC7B0C00043218C /* ConverUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConverUtil.m; sourceTree = "<group>"; };
 		FE6B91281ACA6F7000EE187E /* NSString+NSStringHexToBytes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+NSStringHexToBytes.h"; sourceTree = "<group>"; };
 		FE6B91291ACA6F7000EE187E /* NSString+NSStringHexToBytes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+NSStringHexToBytes.m"; sourceTree = "<group>"; };
+		FEC5ACF41AD0E7DF0052C527 /* My Today Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "My Today Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEC5ACF61AD0E7DF0052C527 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		FEC5ACFA1AD0E7DF0052C527 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FEC5ACFB1AD0E7DF0052C527 /* TodayViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayViewController.h; sourceTree = "<group>"; };
+		FEC5ACFC1AD0E7DF0052C527 /* TodayViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TodayViewController.m; sourceTree = "<group>"; };
+		FEC5ACFE1AD0E7DF0052C527 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
+		FEC5AD071AD0EAFA0052C527 /* My Today Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "My Today Extension.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +98,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FEC5ACF11AD0E7DF0052C527 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC5ACF71AD0E7DF0052C527 /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -74,6 +114,8 @@
 			children = (
 				75CF3D361AC79FA30043218C /* TestEncrypt */,
 				75CF3D501AC79FA30043218C /* TestEncryptTests */,
+				FEC5ACF81AD0E7DF0052C527 /* My Today Extension */,
+				FEC5ACF51AD0E7DF0052C527 /* Frameworks */,
 				75CF3D351AC79FA30043218C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -83,6 +125,7 @@
 			children = (
 				75CF3D341AC79FA30043218C /* TestEncrypt.app */,
 				75CF3D4D1AC79FA30043218C /* TestEncryptTests.xctest */,
+				FEC5ACF41AD0E7DF0052C527 /* My Today Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,6 +177,34 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FEC5ACF51AD0E7DF0052C527 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FEC5ACF61AD0E7DF0052C527 /* NotificationCenter.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FEC5ACF81AD0E7DF0052C527 /* My Today Extension */ = {
+			isa = PBXGroup;
+			children = (
+				FEC5AD071AD0EAFA0052C527 /* My Today Extension.entitlements */,
+				FEC5ACFB1AD0E7DF0052C527 /* TodayViewController.h */,
+				FEC5ACFC1AD0E7DF0052C527 /* TodayViewController.m */,
+				FEC5ACFE1AD0E7DF0052C527 /* MainInterface.storyboard */,
+				FEC5ACF91AD0E7DF0052C527 /* Supporting Files */,
+			);
+			path = "My Today Extension";
+			sourceTree = "<group>";
+		};
+		FEC5ACF91AD0E7DF0052C527 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FEC5ACFA1AD0E7DF0052C527 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -144,10 +215,12 @@
 				75CF3D301AC79FA30043218C /* Sources */,
 				75CF3D311AC79FA30043218C /* Frameworks */,
 				75CF3D321AC79FA30043218C /* Resources */,
+				FEC5AD061AD0E7DF0052C527 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FEC5AD011AD0E7DF0052C527 /* PBXTargetDependency */,
 			);
 			name = TestEncrypt;
 			productName = TestEncrypt;
@@ -172,6 +245,23 @@
 			productReference = 75CF3D4D1AC79FA30043218C /* TestEncryptTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		FEC5ACF31AD0E7DF0052C527 /* My Today Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEC5AD051AD0E7DF0052C527 /* Build configuration list for PBXNativeTarget "My Today Extension" */;
+			buildPhases = (
+				FEC5ACF01AD0E7DF0052C527 /* Sources */,
+				FEC5ACF11AD0E7DF0052C527 /* Frameworks */,
+				FEC5ACF21AD0E7DF0052C527 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "My Today Extension";
+			productName = "My Today Extension";
+			productReference = FEC5ACF41AD0E7DF0052C527 /* My Today Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -187,6 +277,15 @@
 					75CF3D4C1AC79FA30043218C = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 75CF3D331AC79FA30043218C;
+					};
+					FEC5ACF31AD0E7DF0052C527 = {
+						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 28QZKBRGZ7;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -205,6 +304,7 @@
 			targets = (
 				75CF3D331AC79FA30043218C /* TestEncrypt */,
 				75CF3D4C1AC79FA30043218C /* TestEncryptTests */,
+				FEC5ACF31AD0E7DF0052C527 /* My Today Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -224,6 +324,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEC5ACF21AD0E7DF0052C527 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC5ACFF1AD0E7DF0052C527 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +359,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FEC5ACF01AD0E7DF0052C527 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC5ACFD1AD0E7DF0052C527 /* TodayViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -258,6 +374,11 @@
 			isa = PBXTargetDependency;
 			target = 75CF3D331AC79FA30043218C /* TestEncrypt */;
 			targetProxy = 75CF3D4E1AC79FA30043218C /* PBXContainerItemProxy */;
+		};
+		FEC5AD011AD0E7DF0052C527 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FEC5ACF31AD0E7DF0052C527 /* My Today Extension */;
+			targetProxy = FEC5AD001AD0E7DF0052C527 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -415,6 +536,38 @@
 			};
 			name = Release;
 		};
+		FEC5AD031AD0E7DF0052C527 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "My Today Extension/My Today Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "My Today Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		FEC5AD041AD0E7DF0052C527 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "My Today Extension/My Today Extension.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "My Today Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -444,6 +597,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		FEC5AD051AD0E7DF0052C527 /* Build configuration list for PBXNativeTarget "My Today Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FEC5AD031AD0E7DF0052C527 /* Debug */,
+				FEC5AD041AD0E7DF0052C527 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
