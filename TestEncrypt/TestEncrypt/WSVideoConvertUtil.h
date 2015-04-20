@@ -9,5 +9,14 @@
 #import <Foundation/Foundation.h>
 
 @interface WSVideoConvertUtil : NSObject
+/**
+ *  <#Description#>
+ *
+ *  @param fileName fileName
+ *  @param handler  <#handler description#>
+ */
++ (void)decodeFileWithFileName: (NSString *)fileName
+               completeHandler: (void (^)())completeHandler
+                  errorHandler: (void(^)(NSError *error))errorHandler;
 
 @end
